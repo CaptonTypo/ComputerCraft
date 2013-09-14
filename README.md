@@ -9,7 +9,3 @@ I'm not an experienced programmer by any means! Anything you do with this progra
 - The turle will create the farm forward (direction the turtle is facing), and to the left of it's current postion when starting the program.
 - If it's a new farm, the turtle will first created a borader around the farm. If it's an existing farm, the turtle will go into a 'processing' mode and skip the boarder.
 
-##ToDo:
-- [ ]Finish initial code documentation.
-- [ ]Add debug/testing veriable.
-- [ ]Add veriable tree spacing.
