@@ -10,6 +10,6 @@ I'm not an experienced programmer by any means! Anything you do with this progra
 - If it's a new farm, the turtle will first created a borader around the farm. If it's an existing farm, the turtle will go into a 'processing' mode and skip the boarder.
 
 ##ToDo:
-- [ ] Finish initial code documentation.
-- [ ] Add debug/testing veriable.
-- [ ] Add veriable tree spacing.
+- [ ]Finish initial code documentation.
+- [ ]Add debug/testing veriable.
+- [ ]Add veriable tree spacing.
