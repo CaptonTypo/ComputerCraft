@@ -19,20 +19,16 @@ local rowLength = tonumber(read())
 print ("Width of farm? (To the left of the turtle)")
 local rowWidth = tonumber(read())
 
---What slot the fuel is palced in. Must use logs of same wood type.
-local fuelSlot = 16
+--Slot number veriables.
+local fuelSlot = 16 --Slot number the fuel (logs) is palced in. MUST use logs of same wood type.
+local saplings = 15 --Slot number your saplings are in.
+local chest = 14 --Slot number your Ender Chest is in.
+local borderMaterial = 13 --What slot your bordering material is in. Do NOT use logs of the same type as your trees.
 
---What slot your saplings are in.
-local saplings = 15
-
---What slot your Ender Chest is in.
-local chest = 14
-
---What slot your bordering material is in. Do NOT use logs of the same type as your trees.
-local borderMaterial = 13
-
+--Set veriable 'name' to computer's label.
 local name = os.getComputerLabel()
 
+--If a wireless turtle, opens modem and turns on rednet broadcasts.
 function openModem()
 	if peripheral.getType("right") == "modem" then
 		rednet.open("right")
@@ -62,6 +58,7 @@ function checkFuel()
 	end
 end
 
+--Refuels if needed than moves forward breaking blocks that are in the way.
 function moveFwd()
 	checkFuel()
 	if turtle.forward() == false then
@@ -72,6 +69,7 @@ function moveFwd()
 	end
 end
 
+--Cuts down tree
 function removeTree()
 	while turtle.detectUp() == true do
 		repeat
@@ -114,11 +112,13 @@ function plant()
 	end
 end
 
+--Picks up any items on the ground.
 function pickUp()
 	turtle.select(saplings)
 	turtle.suckDown()
 end
 
+--Builds 'length' side of border.
 function borderLength()
 	print ("Placing border side length.")
 	if rowLength % 2 == 0 then
@@ -145,6 +145,7 @@ function borderLength()
 	end
 end
 
+--Builds 'width' side of border.
 function borderWidth()
 	print ("Placing border side width.")
 	if rowWidth % 2 == 0 then
@@ -172,6 +173,7 @@ function borderWidth()
 	end
 end
 
+--Builds border using Length and Width.
 function buildBorder()
 	print ("Building borders.")
 	 for sideCount=1,2 do
@@ -182,6 +184,7 @@ function buildBorder()
 	 end
 end
 
+--Places ender chest to deposit items.
 function depositLoot()
 	print ("Depositing loot.")
 	turtle.select(chest)
@@ -199,6 +202,7 @@ function depositLoot()
 	end
 end
 
+--Places all items from slot 1-13 into ender chest.
 function dropLoot()
 	print ("Droping loot in chest.")
 	local dropItem = 1
@@ -209,6 +213,7 @@ function dropLoot()
 	until dropItem > 12
 end
 
+--Moves down non-tree row picking up items. If a tree some how magically is there, will cut it down.
 function processFillRow()
 	print ("Processing fill row.")
 	local lengthCount = rowLength - 3
@@ -227,6 +232,7 @@ function processFillRow()
 	end
 end
 
+--Moves down tree row. Checks for trees, picks up items.
 function processTreeRow()
 	print ("Processing tree row.")
 	local lengthCount = rowLength - 3
@@ -255,6 +261,7 @@ function processTreeRow()
 	end
 end
 
+--Returns begining point of processing.
 function returnToStart()
 	print ("Returning to starting position.")
 	local toHome = rowWidth - 2
@@ -270,6 +277,7 @@ function returnToStart()
 	turtle.turnLeft()
 end
 
+--Runs buildBorder then moves to begining point of processing.
 function new()
 	print ("Starting new farm.")
 	buildBorder()
@@ -281,6 +289,7 @@ function new()
  	processAll()
 end
 
+--Combines fill and tree row processes to process whole farm.
 function processAll()
 	print ("Processing farm.")
 	local widthCount = rowWidth - 3
@@ -308,6 +317,7 @@ end
 
 openModem()
 
+--Main
 if string.match(isNew, "yes") then
 	print ("You said yes.")
 	if wifi == true then
