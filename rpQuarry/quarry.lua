@@ -1,0 +1,84 @@
+term.clear()
+term.setCursorPos(1,1)
+
+function reset()
+	if rs.testBundledInput("back", colors.green) == false then
+		repeat
+			moveLeft()
+			sleep(1.5)
+		until rs.testBundledInput("back", colors.green) == true
+	end
+end
+
+function moveLeft()
+	rs.setBundledOutput("back", colors.black)
+	sleep(0.25)
+	rs.setBundledOutput("back", 0)
+	sleep(1)
+end
+
+function moveRight()
+	rs.setBundledOutput("back", colors.white)
+	sleep(0.25)	
+	rs.setBundledOutput("back", 0)
+	sleep(1)
+end
+
+function moveFwd()
+	rs.setBundledOutput("back", colors.yellow)
+	sleep(0.25)
+	rs.setBundledOutput("back", 0)
+	sleep(1)
+end
+
+function checkOn()
+	if rs.getInput("front") == false then
+		repeat
+			sleep(5)
+		until rs.getInput("front") == true
+	end
+end
+
+function dig()
+	rs.setBundledOutput("back", colors.red)
+	sleep(0.25)
+	rs.setBundledOutput("back", 0)
+end
+
+function main()
+	if rs.testBundledInput("back", colors.lime) == false then
+		moveFwd()
+		repeat
+			if rs.getInput("front") == true then
+				term.setCursorPos(1,2)
+				print ("Mining to the right.")
+				dig()
+				sleep(1)
+				moveRight()	
+				sleep(1)
+			else
+				sleep(5)
+			end
+		until rs.testBundledInput("back", colors.lime) == true
+	main()
+	end
+	if rs.testBundledInput("back", colors.green) == false then
+		moveFwd()
+		repeat
+			if rs.getInput("front") == true then
+				term.setCursorPos(1,2)
+				print ("Mining to the left. ")
+				dig()
+				sleep(1)
+				moveLeft()
+				sleep(1)
+			else
+				sleep(5)
+			end
+		until rs.testBundledInput("back", colors.green) == true
+	main()
+	end
+end
+
+reset()
+main()

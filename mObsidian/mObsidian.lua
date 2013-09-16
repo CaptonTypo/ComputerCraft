@@ -1,0 +1,49 @@
+term.clear()
+term.setCursorPos(1,1)
+
+local lArgs = (...)
+if lArgs == nil then
+print("Usage: mObsidian (length)")
+return
+end
+
+function moveFwd()
+	if turtle.forward() == false then
+		repeat
+			turtle.dig()
+			sleep(0.3)
+		until turtle.forward() == true
+	end
+end
+
+function checkDown()
+	if turtle.detectDown() == true then
+		repeat
+			turtle.digDown()
+			sleep(0.3)
+		until turtle.detectDown() == false
+	end
+end
+
+function checkFuel()
+	while turtle.getFuelLevel() <= 20 do
+		if turtle.getItemCount(14) > 0 then
+			turtle.select(14)
+			turtle.refuel(1)
+		else
+			print ("Error: Out of fuel! Place more fuel into slot 14.")
+			sleep(5)
+		end
+		sleep(0.1)
+	end
+end
+
+checkDown()
+turtle.down()
+for m = 1,lArgs do
+	checkFuel()
+	moveFwd()
+end
+turtle.up()	
+	
+
