@@ -10,6 +10,7 @@ local count = 0
 		count = count + 1
 		if count > 500 then
 			dropLoot()
+			count = 0
 		end
 	end
 end
