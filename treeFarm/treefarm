@@ -310,14 +310,14 @@ end
 function processAll()
 	print ("Processing farm.")
 	local widthCount = rowWidth - 3
-	local spaceCount = 0
+	local spaceCount = tonumber(0)
 	while widthCount > 1 do
 		repeat
 			if spaceCount ~= treeSpacing then
 				repeat
 					processFillRow()
 					spaceCount = spaceCount + 1
-					if spaceCount % 2 == 1 then
+					if spaceCount % 2 == 0 then
 						turtle.turnLeft()
 						moveFwd()
 						widthCount = widthCount - 1
@@ -330,7 +330,7 @@ function processAll()
 					end
 				until spaceCount == treeSpacing			
 			else
-				if treeSpacing % 2 == 0 then
+				if treeSpacing % 2 == 1 then
 					turtle.turnRight()
 					moveFwd()
 					widthCount = widthCount - 1
