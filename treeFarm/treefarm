@@ -248,6 +248,7 @@ function processFillRow()
 end
 
 --Moves down tree row. Checks for trees, picks up items.
+--[[fix lengthCount]]--
 function processTreeRow()
 	print ("Processing tree row.")
 	local lengthCount = rowLength - 3
@@ -290,7 +291,7 @@ function processTreeRow()
 						sleep(1)
 					end
 			end
-		until lengthCount == 0
+		until lengthCount <= 0
 	end
 end
 
