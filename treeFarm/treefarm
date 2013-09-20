@@ -317,7 +317,7 @@ function processAll()
 				repeat
 					processFillRow()
 					spaceCount = sapceCount + 1
-					if spaceCount % 2 == 0 then
+					if spaceCount % 2 == 1 then
 						turtle.turnLeft()
 						moveFwd()
 						widthCount = widthCount - 1
@@ -330,7 +330,7 @@ function processAll()
 					end
 				until spaceCount == treeSpacing			
 			else
-				if treeSpacing % 2 == 1 then
+				if treeSpacing % 2 == 0 then
 					turtle.turnRight()
 					moveFwd()
 					widthCount = widthCount - 1
