@@ -253,26 +253,42 @@ function processTreeRow()
 	local lengthCount = rowLength - 3
 	while lengthCount > 1 do
 		repeat
-			for i = 1,treeSpacing + 1 do
+			for i = 1,treeSpacing do
 				pickUp()
 				if turtle.compare(turtle.select(fuelSlot)) == true then
 					moveFwd()
 					lengthCount = lengthCount - 1
+						if debug == true then
+							print ("lengthCount = "..lengthCount)
+							sleep(1)
+						end
 					removeTree()
 				else
 					moveFwd()
 					lengthCount = lengthCount - 1
+						if debug == true then
+							print ("lengthCount = "..lengthCount)
+							sleep(1)
+						end
 				end
 			end
 			pickUp()
 			if turtle.compare(turtle.select(fuelSlot)) == true then
 				moveFwd()
 				lengthCount = lengthCount - 1
+					if debug == true then
+						print ("lengthCount = "..lengthCount)
+						sleep(1)
+					end
 				removeTree()
 			else
 				plant()
 				moveFwd()
 				lengthCount = lengthCount - 1
+					if debug == true then
+						print ("lengthCount = "..lengthCount)
+						sleep(1)
+					end
 			end
 		until lengthCount == 0
 	end
@@ -347,7 +363,7 @@ function processAll()
 						sleep(1)
 					end
 				processTreeRow()
-				if treeSpacing % 2 == 0 then
+				if treeSpacing % 2 == 1 then
 						if debug == true then
 							print ("Done processing tree row. Turning right in 1 second.")
 							sleep(1)
