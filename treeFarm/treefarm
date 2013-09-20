@@ -316,7 +316,7 @@ function processAll()
 			if spaceCount ~= treeSpacing then
 				repeat
 					processFillRow()
-					spaceCount = sapceCount + 1
+					spaceCount = spaceCount + 1
 					if spaceCount % 2 == 1 then
 						turtle.turnLeft()
 						moveFwd()
