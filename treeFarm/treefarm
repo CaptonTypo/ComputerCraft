@@ -1,29 +1,44 @@
+--[[---------------------------------------------------------------
+This program will allow you to create a tree farm to any dimension.
+The turle will create the farm forward (direction the turtle is 
+facing), and to the left of it's current postion when starting the
+program. If it's a new farm, the turtle will first created a borader
+around the farm. If it's an existing farm, the turtle will go into 
+a 'processing' mode and skip the boarder. Uses an ender chest to 
+deposte drops. To be used with a **mining** turtle, or your ender
+chest will be destroyed.
+
+https://github.com/CaptonTypo
+]]-----------------------------------------------------------------
+
+--[[Configure slot veriables]]-------------------------------------
+local treeSpacing = 2 --Number of blocks between trees.
+local fuelSlot = 16 --MUST use logs of same wood type.
+local saplings = 15
+local chest = 14 
+local borderMaterial = 13 --Recommend not using same wood type.
+local debug = false --Enables print message to help with debugging.
+local enderChest = true --True, if using an ender chest.
+-------------------------------------------------------------------
+
 term.clear()
 term.setCursorPos(1,1)
 print ("--------------------------------------")
 print ("|            CT-TreeFarm             |")
 print ("|                v1                  |")
-print ("|          by: Captontypo            |")
+print ("|          by: CaptonTypo            |")
 print ("--------------------------------------")
-print ()
-print ("The farm will be created to the front and left of my current position.")
-print ()
+print (" ")
 print ("Is this a new farm?(yes/no): ")
 local isNew = read()
 
 --How many rows of trees in the direction the turtle is currently facing.
-print ("Length of farm? (Direction turtle is facing)")
+print ("Length of farm? (Direction turtle's facing)")
 local rowLength = tonumber(read())
 
 --How many rows of trees to the left of the turtles current location.
 print ("Width of farm? (To the left of the turtle)")
 local rowWidth = tonumber(read())
-
---Slot number veriables.
-local fuelSlot = 16 --Slot number the fuel (logs) is palced in. MUST use logs of same wood type.
-local saplings = 15 --Slot number your saplings are in.
-local chest = 14 --Slot number your Ender Chest is in.
-local borderMaterial = 13 --What slot your bordering material is in. Do NOT use logs of the same type as your trees.
 
 --Set veriable 'name' to computer's label.
 local name = os.getComputerLabel()
@@ -233,31 +248,50 @@ function processFillRow()
 end
 
 --Moves down tree row. Checks for trees, picks up items.
+--[[fix lengthCount]]--
 function processTreeRow()
 	print ("Processing tree row.")
 	local lengthCount = rowLength - 3
 	while lengthCount > 1 do
 		repeat
-			pickUp()
-			if turtle.compare(turtle.select(fuelSlot)) == true then
-				moveFwd()
-				lengthCount = lengthCount - 1
-				removeTree()
-			else
-				moveFwd()
-				lengthCount = lengthCount - 1
+			for i = 1,treeSpacing do
+				pickUp()
+				if turtle.compare(turtle.select(fuelSlot)) == true then
+					moveFwd()
+					lengthCount = lengthCount - 1
+						if debug == true then
+							print ("lengthCount = "..lengthCount)
+							sleep(1)
+						end
+					removeTree()
+				else
+					moveFwd()
+					lengthCount = lengthCount - 1
+						if debug == true then
+							print ("lengthCount = "..lengthCount)
+							sleep(1)
+						end
+				end
 			end
 			pickUp()
 			if turtle.compare(turtle.select(fuelSlot)) == true then
 				moveFwd()
 				lengthCount = lengthCount - 1
+					if debug == true then
+						print ("lengthCount = "..lengthCount)
+						sleep(1)
+					end
 				removeTree()
 			else
 				plant()
 				moveFwd()
 				lengthCount = lengthCount - 1
+					if debug == true then
+						print ("lengthCount = "..lengthCount)
+						sleep(1)
+					end
 			end
-		until lengthCount == 0
+		until lengthCount <= 0
 	end
 end
 
@@ -293,31 +327,70 @@ end
 function processAll()
 	print ("Processing farm.")
 	local widthCount = rowWidth - 3
+	local spaceCount = 0
 	while widthCount > 1 do
 		repeat
-			processFillRow()
-			turtle.turnLeft()
-			moveFwd()
-			widthCount = widthCount - 1
-			turtle.turnLeft()
-			processTreeRow()
-			turtle.turnRight()
-			if turtle.detect() == true then
-				turtle.dig()
-				depositLoot()
+			if spaceCount < treeSpacing then
+				repeat
+					if debug == true then
+						print ("Processing fill row in 1 second.")
+						sleep(1)
+					end
+					processFillRow()
+					spaceCount = spaceCount + 1
+					if spaceCount % 2 == 1 then
+						if debug == true then
+							print ("Done processing fill row. Turning left in 1 second.")
+							sleep(1)
+						end
+						turtle.turnLeft()
+						moveFwd()
+						widthCount = widthCount - 1
+						turtle.turnLeft()
+					else
+						if debug == true then
+							print ("Done processing fill row. Turning right in 1 second.")
+							sleep(1)
+						end
+						turtle.turnRight()
+						moveFwd()
+						widthCount = widthCount - 1
+						turtle.turnRight()
+					end
+				until spaceCount == treeSpacing			
 			else
-				depositLoot()
+				if debug == true then
+						print ("Processing tree row in 1 second.")
+						sleep(1)
+					end
+				processTreeRow()
+				if treeSpacing % 2 == 1 then
+						if debug == true then
+							print ("Done processing tree row. Turning right in 1 second.")
+							sleep(1)
+						end
+					turtle.turnRight()
+					moveFwd()
+					widthCount = widthCount - 1
+					turtle.turnRight()
+				else
+						if debug == true then
+							print ("Done processing tree row. Turning left in 1 second.")
+							sleep(1)
+						end
+					turtle.turnLeft()
+					moveFwd()
+					widthCount = widthCount - 1
+					turtle.turnLeft()
+				end
+				spaceCount = 0
 			end
-			moveFwd()
-			widthCount = widthCount - 1
-			turtle.turnRight()
 		until widthCount == 0
 	end
 end
 
-openModem()
-
 --Main
+openModem()
 if string.match(isNew, "yes") then
 	print ("You said yes.")
 	if wifi == true then
